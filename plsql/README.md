@@ -1028,6 +1028,95 @@ END;
 /
 ```
 
+#### Parámetros `IN/OUT`
+
+Declaración y definición del procedimiento
+
+```plsql
+CREATE OR REPLACE PROCEDURE CALC_TAX_IN_OUT 
+	(EMPL IN EMPLOYEES.EMPLOYEE_ID%TYPE, T1 IN OUT NUMBER)
+IS
+	SAL NUMBER:=0;
+BEGIN
+	IF T1 <0 OR T1 > 60 THEN 
+		RAISE_APPLICATION_ERROR(-20000,'EL PORCENTAJE DEBE ESTAR ENTRE 0 Y 60');
+	END IF;    
+	SELECT SALARY INTO SAL FROM EMPLOYEES WHERE EMPLOYEE_ID=EMPL;
+	DBMS_OUTPUT.PUT_LINE('T1='||T1);
+	T1:=SAL*T1/100;
+	DBMS_OUTPUT.PUT_LINE('SALARY:'||SAL);
+EXCEPTION
+	WHEN NO_DATA_FOUND THEN
+		DBMS_OUTPUT.PUT_LINE('NO EXISTE EL EMPLEADO');
+END;
+```
+
+Ejecución del procedimiento
+
+```plsql
+SET SERVEROUTPUT ON
+DECLARE
+	A NUMBER;
+	B NUMBER;
+BEGIN
+	A:=120;
+	B:=10;
+	CALC_TAX_IN_OUT(A,B);
+	DBMS_OUTPUT.PUT_LINE('B='||B);
+END;
+/
+```
+
+### Funciones
+
+A pesar de que es posible añadir parámetros de tipo `OUT` e `IN/OUT` en las funciones, no es buena práctica, entre otras razones porque esto impide el uso de nuestra función almacenada en sentencias SQL 
+
+Declaración y definición de la función
+
+```plsql
+CREATE OR REPLACE FUNCTION CALC_TAX_F
+	(EMPL IN EMPLOYEES.EMPLOYEE_ID%TYPE, T1 IN NUMBER)
+RETURN NUMBER
+IS
+	TAX NUMBER:=0;
+	SAL NUMBER:=0;
+BEGIN
+	IF T1 <0 OR T1 > 60 THEN 
+		RAISE_APPLICATION_ERROR(-20000,'EL PORCENTAJE DEBE ESTAR ENTRE 0 Y 60');
+	END IF;
+	SELECT SALARY INTO SAL FROM EMPLOYEES WHERE EMPLOYEE_ID=EMPL;
+	TAX:=SAL*T1/100;
+	RETURN TAX;
+EXCEPTION
+	WHEN NO_DATA_FOUND THEN
+		DBMS_OUTPUT.PUT_LINE('NO EXISTE EL EMPLEADO');
+END;
+```
+
+Ejecución de la función
+
+```plsql
+SET SERVEROUTPUT ON
+DECLARE
+	A NUMBER;
+	B NUMBER;
+	R NUMBER;
+BEGIN
+	A:=120;
+	B:=10;
+	R:=CALC_TAX_F(A,B);
+	DBMS_OUTPUT.PUT_LINE('R='||R);
+END;
+/
+```
+
+## Paquetes
+
+
+
+
+
 
 
 *Elaborado por [**David Corredor Ramírez**](https://www.linkedin.com/in/dgcorredorr/)*
+
