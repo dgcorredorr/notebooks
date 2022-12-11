@@ -1112,11 +1112,39 @@ END;
 
 ## Paquetes
 
+Están conformados por dos componentes:
 
+* SPEC: Tiene todas las declaraciones de variables, procedimientos y funciones públicos. **Obligatorio**
+* BODY: Variables, código, procedimientos y funciones, si algo está declarado en la cabecera o SPEC, debe ser definido y programado en el BODY; lo que se declare en el BODY y no en el SPEC, no es accesible desde fuera del paquete.
 
+Es posible usar un paquete en el que únicamente se declaren variables, para poder acceder a estas de forma global **durante la sesión**
 
+```plsql
+CREATE OR REPLACE PACKAGE PACK1
+IS
+	V1 NUMBER;
+	V2 VARCHAR2(100);
+END;
+/
+```
 
+Para acceder a estos objetos
 
+```plsql
+SET SERVEROUTPUT ON
+BEGIN
+    PACK1.V1:=100;
+    PACK1.V2:='AAAAA';
+    DBMS_OUTPUT.PUT_LINE(PACK1.V1);
+    DBMS_OUTPUT.PUT_LINE(PACK1.V2);
+END;
+/
+```
 
-*Elaborado por [**David Corredor Ramírez**](https://www.linkedin.com/in/dgcorredorr/)*
+## Créditos
+
+*Elaborado por **David Corredor Ramírez***:
+
+* [**LinkedIn**](https://www.linkedin.com/in/dgcorredorr/)
+* [**GitHub**](https://github.com/dgcorredorr)
 

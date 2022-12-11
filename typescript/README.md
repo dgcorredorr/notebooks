@@ -167,6 +167,9 @@ fruits.push('pineapple');
 
 
 
+## Créditos
 
+*Elaborado por **David Corredor Ramírez***:
 
-*Elaborado por [**David Corredor Ramírez**](https://www.linkedin.com/in/dgcorredorr/)*
+* [**LinkedIn**](https://www.linkedin.com/in/dgcorredorr/)
+* [**GitHub**](https://github.com/dgcorredorr)
